@@ -17,6 +17,8 @@ class KepanAdmin(BaseDateTimeAdmin):
         ('created_time', DateRangeFilter),
     )
 
+    list_editable = ['status']
+
     search_fields = ['order']
 
     actions_on_bottom = True
