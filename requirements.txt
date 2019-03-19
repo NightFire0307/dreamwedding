@@ -1,0 +1,4 @@
+-i https://pypi.douban.com/simple/
+django~=2.1
+django-daterange-filter=1.3.0
+openpyxl==2.6.1
