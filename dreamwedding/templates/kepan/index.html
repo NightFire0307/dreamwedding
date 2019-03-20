@@ -1,0 +1,92 @@
+{% extends './base.html' %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="layui-fluid">
+    <div class="layui-col-space15">
+        <div class="layui-col-md8">
+            <div class="layui-card">
+                <div class="layui-card-header">数据展示</div>
+                <div class="layui-card-body" id="main" style="width: 95%; height: 500px">
+                    <script type="text/javascript">
+                        // 初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main'));
+
+                        var option = {
+                            title: {
+                                text: '七日刻盘数据',
+                                x: 'center',
+                                y: 'top',
+                                textAlign: 'center',
+                                textStyle: {
+                                    color: '#393D49',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                },
+                            },
+                            grid: {
+                                left: '2%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            xAxis: {
+                                type: 'category',
+                                boundaryGap: false,
+                                data: {{ date|safe }},
+                                axisLine: {
+                                  lineStyle: {
+                                      color: '#009688',
+                                      width: 2,
+                                  }
+                                },
+                            },
+                            yAxis: {
+                                type: 'value',
+                                axisLine: {
+                                  lineStyle: {
+                                      color: '#009688',
+                                      width: 2,
+                                  }
+                                },
+                            },
+                            series: [
+                                {
+                                    name:'刻盘数量',
+                                    type:'line',
+                                    stack: '总量',
+                                    data:{{ count|safe }},
+                                    itemStyle: {
+                                        color: '#009688',
+                                    },
+                                    symbolSize: 8,
+                                },
+                            ]
+                        };
+
+                        //
+                        myChart.setOption(option);
+                        window.onresize = myChart.resize;
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header"></div>
+                <div class="layui-card-body"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

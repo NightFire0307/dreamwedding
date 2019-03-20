@@ -6,6 +6,9 @@ from datetime import datetime
 from django.contrib import admin
 
 class BaseDateTimeAdmin(admin.ModelAdmin):
+    '''
+    Admin 自动添加时间基类
+    '''
     exclude = ('created_time', )
 
     def save_model(self, request, obj, form, change):
