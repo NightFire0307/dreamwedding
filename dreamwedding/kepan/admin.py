@@ -14,7 +14,7 @@ from .base_admin import BaseDateTimeAdmin
 from .forms import KepanExcelForms
 from .models import Kepan
 from .excel_save import Save_model
-
+from .views import download_excel
 
 @admin.register(Kepan)
 class KepanAdmin(BaseDateTimeAdmin):
@@ -39,7 +39,9 @@ class KepanAdmin(BaseDateTimeAdmin):
         urls = super(KepanAdmin, self).get_urls()
         custom_urls = [
             path('upload_excel/', self.admin_site.admin_view(self.upload_excel),
-                name='upload_excel')
+                name='upload_excel'),
+            path('download_excel', self.admin_site.admin_view(download_excel),
+                 name='download_excel'),
         ]
         return custom_urls + urls
 

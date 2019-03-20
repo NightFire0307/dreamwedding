@@ -20,6 +20,7 @@ class Kepan(models.Model):
         return self.order
 
     class Meta:
+        ordering = ['-order']
         verbose_name = verbose_name_plural = '刻盘记录'
 
 
