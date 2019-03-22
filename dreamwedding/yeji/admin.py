@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from django.contrib import admin
+from daterange_filter.filter import DateRangeFilter
 
 from .models import Shejishi, Yeji
 
@@ -14,6 +15,9 @@ class YejiAdmin(admin.ModelAdmin):
                     'jiaogao_own', 'chujian_date', 'zhangshu',
                     'note', 'created_time']
 
+    list_filter = ('owner', 'jiaogao_own',
+                   ('chujian_date', DateRangeFilter),
+                   ('created_time', DateRangeFilter))
     # list_editable = ['chujian_date']
 
     save_on_top = True

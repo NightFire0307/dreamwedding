@@ -3,6 +3,7 @@ from datetime import date
 from datetime import timedelta
 from django.db import models
 from django.utils import timezone
+from django.utils.html import format_html
 
 class Shejishi(models.Model):
     name = models.CharField(max_length=30, verbose_name='设计师名字')
@@ -30,6 +31,12 @@ class Yeji(models.Model):
     zhangshu = models.IntegerField(verbose_name='照片张数', null=True, blank=True)
     note = models.CharField(max_length=500, verbose_name='备注', null=True, blank=True)
     created_time = models.DateTimeField(auto_now=True, verbose_name='登记时间')
+
+    # def colored_chujian(self):
+    #     return format_html(
+    #         '<span style="color: #CC0000;">{}</span>',
+    #         self.chujian_date,
+    #     )
 
     def __str__(self):
         return '订单号：{}'.format(self.order)

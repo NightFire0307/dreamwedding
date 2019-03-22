@@ -2,7 +2,6 @@
 import os
 
 from django.contrib import admin
-from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.models import LogEntry
 from django.contrib.admin import helpers
 from django.http import HttpResponseRedirect, HttpResponse
