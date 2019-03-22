@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
+from datetime import date
 from django.db import models
+from django.utils import timezone
 
 class Kepan(models.Model):
     STATUS_UNFINASHED = 0
@@ -13,7 +15,7 @@ class Kepan(models.Model):
     name_man = models.CharField(max_length=50, verbose_name='先生姓名', null=True, blank=True)
     name_wom = models.CharField(max_length=50, verbose_name='小姐姓名', null=True, blank=True)
     status = models.PositiveIntegerField(choices=STATUS_ITEM, default=STATUS_UNFINASHED, verbose_name='刻盘状态')
-    created_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    created_time = models.DateField(default=date.today, verbose_name='创建时间')
     note = models.CharField(max_length=500, verbose_name='备注', null=True, blank=True)
 
     def __str__(self):

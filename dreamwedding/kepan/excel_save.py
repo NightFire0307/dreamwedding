@@ -13,14 +13,18 @@ def Save_model(excel_file):
     max_row = sheet.max_row
 
     headers = ['order', 'name_man', 'name_wom',
-               'status', 'note']
+               'status', 'created_time', 'note']
     lists = []
 
     for row in range(3, max_row + 1):
         context = {}
         for column in range(1, len(headers) + 1):
             key = headers[column - 1]
-            context[key] = sheet.cell(row=row, column=column).value
+            if column != 5:
+                context[key] = sheet.cell(row=row, column=column).value
+            else:
+                time = sheet.cell(row=row, column=column).value
+                context[key] = '{}-{}-{}'.format(time.year, time.month, time.day)
         lists.append(context)
 
     sqllist = []
@@ -32,7 +36,9 @@ def Save_model(excel_file):
             status = Kepan.STATUS_FINASH
         else:
             status = Kepan.STATUS_UNFINASHED
+        created_time = cell['created_time']
         note = cell['note']
-        sql = Kepan(order=order, name_man=name_man, name_wom=name_wom, status=status, note=note)
+        sql = Kepan(order=order, name_man=name_man, name_wom=name_wom,
+                    status=status, created_time=created_time, note=note)
         sqllist.append(sql)
     Kepan.objects.bulk_create(sqllist)
