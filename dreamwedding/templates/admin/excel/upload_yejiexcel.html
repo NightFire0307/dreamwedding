@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static %}
+
+{% block extrastyle %}
+	{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}"/>
+{% endblock %}
+
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ app_label|capfirst|escape }}</a>
+        &rsaquo; {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">
+        {{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+        &rsaquo; {% trans '上传Excel' %}
+    </div>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+
+	<h1>{% trans "上传Excel表格" %}</h1>
+	{% blocktrans %}
+		<p>在此页面上，可以批量上传记录，只要放在Excel文件中即可</p>
+        <ul>
+            <li>请上传Excel 2007版本以及更高版本的文件</li>
+        </ul>
+	{% endblocktrans %}
+
+	{% if form.errors %}
+	    <p class="errornote">
+	    {% if form.errors|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+	    </p>
+	    {{ form.non_field_errors }}
+	{% endif %}
+
+	<form action="{% url 'admin:upload_yejiexcel' %}" method="post" id="excel_upload_form"
+          {% if form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+        {% csrf_token %}
+        <div>
+            {% for fieldset in adminform %}
+                {% include "admin/includes/fieldset.html" %}
+            {% endfor %}
+        </div>
+        <div class="submit-row">
+            <input type="submit" value="{% trans '上传' %}" class="default"/>
+        </div>
+    </form>
+
+{% endblock %}

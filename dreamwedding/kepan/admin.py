@@ -10,7 +10,7 @@ from django.urls import path
 from daterange_filter.filter import DateRangeFilter
 
 from .base_admin import BaseDateTimeAdmin
-from .forms import KepanExcelForms
+from .forms import ExcelForms
 from .models import Kepan
 from .excel_save import Save_model
 from .views import download_excel
@@ -53,7 +53,7 @@ class KepanAdmin(BaseDateTimeAdmin):
         }
 
         if request.method == 'POST':
-            form = KepanExcelForms(request.POST, request.FILES)
+            form = ExcelForms(request.POST, request.FILES)
             if form.is_valid():
                 if self.is_excel(request.FILES['excel_file']):
                     Save_model(request.FILES['excel_file'])
@@ -61,7 +61,7 @@ class KepanAdmin(BaseDateTimeAdmin):
                 else:
                     return HttpResponseRedirect('.')
         else:
-            form = KepanExcelForms()
+            form = ExcelForms()
 
         context['form'] = form
         context['adminform'] = helpers.AdminForm(form,
@@ -69,15 +69,14 @@ class KepanAdmin(BaseDateTimeAdmin):
                                                  {})
         return render(request, 'admin/excel/upload_excel.html', context)
 
-    def is_excel(self, file):
-        '''
-        判断是否有效的Excel文件，如果有效则返回True，无效则返回False
-        '''
-        if os.path.splitext(str(file))[1] == '.xlsx':
-            return True
-        else:
-            return False
-
+def is_excel(file):
+    '''
+    判断是否有效的Excel文件，如果有效则返回True，无效则返回False
+    '''
+    if os.path.splitext(str(file))[1] == '.xlsx':
+        return True
+    else:
+        return False
 
 @admin.register(LogEntry)
 class LogEntryAdmin(admin.ModelAdmin):

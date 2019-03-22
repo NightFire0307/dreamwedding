@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.html import format_html
 
 class Shejishi(models.Model):
-    name = models.CharField(max_length=30, verbose_name='设计师名字')
+    name = models.CharField(max_length=30, verbose_name='设计师名字', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -25,18 +25,26 @@ class Yeji(models.Model):
     jiaogao = models.DateField(default=delay_month, verbose_name='校稿日期')
     taoxi = models.IntegerField(verbose_name='套系金额')
     jiaxuan = models.IntegerField(verbose_name='加选金额', null=True, blank=True)
-    owner = models.ForeignKey('Shejishi', verbose_name='所属设计师', on_delete=models.CASCADE, related_name='shejishi_own')
+    owner = models.ForeignKey('Shejishi', verbose_name='所属设计师', on_delete=models.CASCADE, related_name='shejishi_own', null=True)
     jiaogao_own = models.ForeignKey('Shejishi', verbose_name='校稿设计师', on_delete=models.CASCADE, related_name='shejishi_jgown')
     chujian_date = models.DateField(default='', verbose_name='出件时间', null=True, blank=True)
     zhangshu = models.IntegerField(verbose_name='照片张数', null=True, blank=True)
     note = models.CharField(max_length=500, verbose_name='备注', null=True, blank=True)
     created_time = models.DateTimeField(auto_now=True, verbose_name='登记时间')
 
-    # def colored_chujian(self):
-    #     return format_html(
-    #         '<span style="color: #CC0000;">{}</span>',
-    #         self.chujian_date,
-    #     )
+    def colored_chujian(self):
+        return format_html(
+            '<span style="color: #CC0000;">{}</span>',
+            self.chujian_date
+        )
+    colored_chujian.short_description = '出件时间' #添加colored_chujian 描述名
+
+    def colored_jiaogao(self):
+        return format_html(
+            '<span style="color: #79aec8;">{}</span>',
+            self.jiaogao,
+        )
+    colored_jiaogao.short_description = '校稿日期'
 
     def __str__(self):
         return '订单号：{}'.format(self.order)
