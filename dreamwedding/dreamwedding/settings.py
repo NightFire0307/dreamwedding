@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'kepan',
+    'yeji',
 
     'daterange_filter',
     'django.contrib.admin',
