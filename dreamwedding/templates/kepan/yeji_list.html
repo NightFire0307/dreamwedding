@@ -1,0 +1,127 @@
+{% extends "./base.html" %}
+
+{% block body %}
+<div class="layui-fluid">
+    <div class="layui-col-space15">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">数据展示</div>
+                <div class="layui-card-body" id="main" style="width: 95%; height: 520px">
+                    <script type="text/javascript">
+                        // 初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('main'));
+
+                        var option = {
+                            title : {
+                                text: '套系比例图',
+                                subtext: '所有套系比例',
+                                x:'center'
+                            },
+                            tooltip : {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left',
+                                data: ['4999套系', '5999套系', '6999套系', '7999套系', '8999套系', '其它套系']
+                            },
+                            series : [
+                                {
+                                    name: '套系金额比例',
+                                    type: 'pie',
+                                    radius : '55%',
+                                    center: ['50%', '60%'],
+                                    data:[
+                                        {value:{{ tx_4999|safe }}, name:'4999套系'},
+                                        {value:{{ tx_5999|safe }}, name:'5999套系'},
+                                        {value:{{ tx_6999|safe }}, name:'6999套系'},
+                                        {value:{{ tx_7999|safe }}, name:'7999套系'},
+                                        {value:{{ tx_8999|safe }}, name:'8999套系'}
+                                    ],
+                                    itemStyle: {
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+
+                        //
+                        myChart.setOption(option);
+                        window.onresize = myChart.resize;
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">数据展示</div>
+                <div class="layui-card-body">
+                    <div class="layui-card-body" id="yeji" style="width: 95%; height: 500px">
+                    <script>
+                        var myChart = echarts.init(document.getElementById('yeji'));
+
+                        var option = {
+                            title: {
+                                text: '7天出件数据'
+                            },
+                            tooltip : {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                    label: {
+                                        backgroundColor: '#6a7985'
+                                    }
+                                }
+                            },
+                            legend: {
+                                data:['出件数据']
+                            },
+                            toolbox: {
+                                feature: {
+                                    saveAsImage: {}
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data : {{ date|safe }}
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value'
+                                }
+                            ],
+                            series : [
+                                {
+                                    name:'出件数据',
+                                    type:'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data:{{ count|safe }}
+                                },
+                            ]
+                        };
+
+                        myChart.setOption(option);
+                        window.onresize = myChart.resize;
+                    </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
