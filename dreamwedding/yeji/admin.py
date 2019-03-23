@@ -7,7 +7,8 @@ from django.urls import path
 from django.shortcuts import render
 from daterange_filter.filter import DateRangeFilter
 
-from .models import Shejishi, Yeji
+from .models import Shejishi, Yeji, Department
+from .views import download_yejiexcel
 
 from kepan.forms import ExcelForms
 from kepan.admin import is_excel
@@ -17,17 +18,22 @@ from .excel_save import Save_yejimodel
 class ShejishiAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
 @admin.register(Yeji)
 class YejiAdmin(admin.ModelAdmin):
     list_display = ['order', 'name', 'colored_jiaogao',
                     'taoxi', 'jiaxuan', 'owner',
                     'jiaogao_own', 'colored_chujian', 'zhangshu',
-                    'note', 'created_time']
+                    'note', 'department']
 
-    list_filter = ('owner', 'jiaogao_own',
+    list_filter = ('owner', 'jiaogao_own', 'department',
                    ('chujian_date', DateRangeFilter),
-                   ('created_time', DateRangeFilter),)
-    # list_editable = ['chujian_date']
+                   ('jiaogao', DateRangeFilter),)
+
+    # list_editable = ['colored_chujian']
 
     save_on_top = True
     actions_on_top = True
@@ -41,6 +47,8 @@ class YejiAdmin(admin.ModelAdmin):
         custom_urls = [
             path('upload_yejiexcel/', self.admin_site.admin_view(self.upload_excel),
                  name='upload_yejiexcel'),
+            path('download_yejiexcel', self.admin_site.admin_view(download_yejiexcel),
+                 name='download_yejiexcel'),
         ]
         return custom_urls + urls
 
@@ -57,7 +65,7 @@ class YejiAdmin(admin.ModelAdmin):
             if form.is_valid():
                 if is_excel(request.FILES['excel_file']):
                     Save_yejimodel(request.FILES['excel_file'])
-                    return HttpResponseRedirect('.')
+                    return HttpResponseRedirect('..')
                 else:
                     return HttpResponseRedirect('.')
         else:
@@ -68,4 +76,3 @@ class YejiAdmin(admin.ModelAdmin):
                                                  list([(None, {'fields': form.base_fields})]),
                                                  {})
         return render(request, 'admin/yeji/extras/upload_excel.html', context)
-

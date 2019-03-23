@@ -10,7 +10,7 @@ from django.shortcuts import render
 from .models import Kepan
 
 def download_excel(request):
-    file_path = open(settings.BASE_DIR + '\\' + 'templates/admin/excel_templates/导入模板.xlsx', 'rb')
+    file_path = open(settings.BASE_DIR + '\\' + 'templates/admin/excel_templates/刻盘导入模板.xlsx', 'rb')
     response = FileResponse(file_path, as_attachment=True)
     return response
 
