@@ -34,6 +34,8 @@ class KepanAdmin(BaseDateTimeAdmin):
 
     save_on_top = True
 
+    change_list_template = 'admin/kepan/extras/change_list.html'
+
     def get_urls(self):
         urls = super(KepanAdmin, self).get_urls()
         custom_urls = [
@@ -67,7 +69,7 @@ class KepanAdmin(BaseDateTimeAdmin):
         context['adminform'] = helpers.AdminForm(form,
                                                  list([(None, {'fields': form.base_fields})]),
                                                  {})
-        return render(request, 'admin/excel/upload_excel.html', context)
+        return render(request, 'admin/kepan/extras/upload_excel.html', context)
 
 def is_excel(file):
     '''

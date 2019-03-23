@@ -34,15 +34,17 @@ class YejiAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     search_fields = ['order', 'jiaogao_own__name']
 
+    change_list_template = 'admin/yeji/extras/change_list.html'
+
     def get_urls(self):
         urls = super(YejiAdmin, self).get_urls()
         custom_urls = [
-            path('upload_yejiexcel', self.admin_site.admin_view(self.upload_yejiexcel),
+            path('upload_yejiexcel/', self.admin_site.admin_view(self.upload_excel),
                  name='upload_yejiexcel'),
         ]
         return custom_urls + urls
 
-    def upload_yejiexcel(self, request):
+    def upload_excel(self, request):
         context = {
             'title': 'Upload Excel',
             'app_label': self.model._meta.app_label,
@@ -65,5 +67,5 @@ class YejiAdmin(admin.ModelAdmin):
         context['adminform'] = helpers.AdminForm(form,
                                                  list([(None, {'fields': form.base_fields})]),
                                                  {})
-        return render(request, 'admin/excel/upload_yejiexcel.html', context)
+        return render(request, 'admin/yeji/extras/upload_excel.html', context)
 
