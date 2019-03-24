@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="layui-fluid">
-    <div class="layui-col-space15">
+    <div class="layui-row layui-col-space15">
         <div class="layui-col-md6">
             <div class="layui-card">
                 <div class="layui-card-header">数据展示</div>
@@ -24,7 +24,7 @@
                             legend: {
                                 orient: 'vertical',
                                 left: 'left',
-                                data: ['4999套系', '5999套系', '6999套系', '7999套系', '8999套系', '其它套系']
+                                data: ['4999套系', '5999套系', '6999套系', '7999套系', '8999套系']
                             },
                             series : [
                                 {
@@ -67,7 +67,7 @@
 
                         var option = {
                             title: {
-                                text: '设计师出件量',
+                                text: '设计师出件量（上月）',
                                 subtext: '当月设计师总出件量',
                                 x: 'center',
                             },
@@ -115,6 +115,75 @@
                 </div>
             </div>
         </div>
+        <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">数据展示</div>
+                    <div class="layui-card-body" style="width: 95%; height: 400px" id="tx_chujian">
+                        <script>
+                            var myChart = echarts.init(document.getElementById('tx_chujian'))
+
+                            var option = {
+                                title: {
+                                    text: '堆叠区域图'
+                                },
+                                tooltip : {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'cross',
+                                        label: {
+                                            backgroundColor: '#6a7985'
+                                        }
+                                    }
+                                },
+                                legend: {
+                                    data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                                },
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+                                xAxis : [
+                                    {
+                                        type : 'category',
+                                        boundaryGap : false,
+                                        data : ['周一','周二','周三','周四','周五','周六','周日']
+                                    }
+                                ],
+                                yAxis : [
+                                    {
+                                        type : 'value'
+                                    }
+                                ],
+                                series : [
+                                    {
+                                        name:'搜索引擎',
+                                        type:'line',
+                                        stack: '总量',
+                                        label: {
+                                            normal: {
+                                                show: true,
+                                                position: 'top'
+                                            }
+                                        },
+                                        areaStyle: {normal: {}},
+                                        data:[200, 250, 100, 230, 300, 150, 186]
+                                    }
+                                ]
+                            };
+
+                            myChart.setOption(option);
+                            window.onresize = myChart.resize;
+                        </script>
+                    </div>
+                </div>
+            </div>
     </div>
 </div>
 {% endblock %}

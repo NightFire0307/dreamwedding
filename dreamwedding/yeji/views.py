@@ -21,7 +21,7 @@ def yejiview(request):
     owner_out_count = []
 
     for owner in owner_id_list:
-        owner_out_count.append(Yeji.objects.filter(owner_id=owner, chujian_date__month=datetime.now().month).count())
+        owner_out_count.append(Yeji.objects.filter(owner_id=owner, chujian_date__month=datetime.now().month - 1).count())
 
     tx_4999 = Yeji.objects.filter(taoxi='4999').count()
     tx_5999 = Yeji.objects.filter(taoxi='5999').count()
