@@ -7,7 +7,7 @@ from django.urls import path
 from django.shortcuts import render
 from daterange_filter.filter import DateRangeFilter
 
-from .models import Shejishi, Yeji, Department
+from .models import Shejishi, Yeji
 from .views import download_yejiexcel
 
 from kepan.forms import ExcelForms
@@ -18,9 +18,9 @@ from .excel_save import Save_yejimodel
 class ShejishiAdmin(admin.ModelAdmin):
     list_display = ['name']
 
-@admin.register(Department)
-class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ['name']
+# @admin.register(Department)
+# class DepartmentAdmin(admin.ModelAdmin):
+#     list_display = ['name']
 
 @admin.register(Yeji)
 class YejiAdmin(admin.ModelAdmin):

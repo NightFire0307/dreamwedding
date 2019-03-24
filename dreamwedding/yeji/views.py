@@ -7,7 +7,7 @@ from django.conf import settings
 from django.http import FileResponse
 from django.shortcuts import render
 
-from .models import Yeji
+from .models import Yeji, Shejishi
 
 def download_yejiexcel(request):
     file_path = open(settings.BASE_DIR + '\\' + 'templates/admin/excel_templates/业绩导入模板.xlsx', 'rb')
@@ -15,15 +15,13 @@ def download_yejiexcel(request):
     return response
 
 def yejiview(request):
-    date_list = []
-    count_list = []
-    for day in range(1, 8):
-        now = datetime.now()
-        dt = now - timedelta(day)
-        yeji_count = Yeji.objects.filter(chujian_date__year=dt.year, chujian_date__month=dt.month,
-                                         chujian_date__day=dt.day).count()
-        count_list.append(yeji_count)
-        date_list.append(dt.strftime('%Y-%m-%d'))
+    owner_all = list(Shejishi.objects.filter(status=Shejishi.STATUS_NORMAL))
+    owner_name = [name.name for name in owner_all]
+    owner_id_list = [name.id for name in owner_all]
+    owner_out_count = []
+
+    for owner in owner_id_list:
+        owner_out_count.append(Yeji.objects.filter(owner_id=owner, chujian_date__month=datetime.now().month).count())
 
     tx_4999 = Yeji.objects.filter(taoxi='4999').count()
     tx_5999 = Yeji.objects.filter(taoxi='5999').count()
@@ -37,10 +35,9 @@ def yejiview(request):
         'tx_6999': tx_6999,
         'tx_7999': tx_7999,
         'tx_8999': tx_8999,
-        'date': json.dumps(date_list),
-        'count': json.dumps(count_list),
+        'owner': json.dumps(owner_name),
+        'owner_count': json.dumps(owner_out_count),
     }
-    print(context)
 
     return render(request, 'kepan/yeji_list.html', context=context)
 

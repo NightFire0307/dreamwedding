@@ -5,17 +5,25 @@ from django.db import models
 from django.utils import timezone
 from django.utils.html import format_html
 
-class Department(models.Model):
-    name = models.CharField(max_length=30, verbose_name='订单所属部门', null=True, blank=True, unique=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = verbose_name_plural = '订单所属部门'
+# class Department(models.Model):
+#     name = models.CharField(max_length=30, verbose_name='订单所属部门', null=True, blank=True, unique=True)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         verbose_name = verbose_name_plural = '订单所属部门'
 
 class Shejishi(models.Model):
+    STATUS_NORMAL = 0
+    STATUS_QUIT = 1
+    STATUS_ITEM = (
+        (STATUS_NORMAL, '在职'),
+        (STATUS_QUIT, '离职'),
+    )
+
     name = models.CharField(max_length=30, verbose_name='设计师名字', null=True, blank=True)
+    status = models.PositiveIntegerField(choices=STATUS_ITEM, default=STATUS_NORMAL, verbose_name='是否在职')
 
     def __str__(self):
         return self.name
@@ -27,6 +35,17 @@ class Yeji(models.Model):
     '''
     dealy_month 代表校稿时间往后延期一个月
     '''
+    DEPARTMENT_HS = 0
+    DEPARTMENT_BB = 1
+    DEPARTMENT_QJF = 2
+    DEPARTMENT_LF = 3
+
+    DEPARTMENT_ITEM = (
+        (DEPARTMENT_HS, '婚纱馆'),
+        (DEPARTMENT_BB, '宝宝馆'),
+        (DEPARTMENT_QJF, '全家福'),
+    )
+
     delay_month = date.today() + timedelta(days=30)
 
     order = models.CharField(max_length=50,
@@ -57,10 +76,7 @@ class Yeji(models.Model):
     zhangshu = models.IntegerField(verbose_name='照片张数',
                                    null=True,
                                    blank=True)
-    department = models.ForeignKey('Department',
-                                   verbose_name='订单所属部门',
-                                   on_delete=models.SET_NULL,
-                                   null=True)
+    department = models.PositiveIntegerField(choices=DEPARTMENT_ITEM, verbose_name='订单所属部门', null=True, blank=True)
     note = models.CharField(max_length=500,
                             verbose_name='备注',
                             null=True,

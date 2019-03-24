@@ -67,23 +67,15 @@
 
                         var option = {
                             title: {
-                                text: '7天出件数据'
+                                text: '设计师出件量',
+                                subtext: '当月设计师总出件量',
+                                x: 'center',
                             },
+                            color: ['#3398DB'],
                             tooltip : {
                                 trigger: 'axis',
-                                axisPointer: {
-                                    type: 'cross',
-                                    label: {
-                                        backgroundColor: '#6a7985'
-                                    }
-                                }
-                            },
-                            legend: {
-                                data:['出件数据']
-                            },
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
+                                axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                    type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                                 }
                             },
                             grid: {
@@ -95,8 +87,10 @@
                             xAxis : [
                                 {
                                     type : 'category',
-                                    boundaryGap : false,
-                                    data : {{ date|safe }}
+                                    data : {{ owner|safe }},
+                                    axisTick: {
+                                        alignWithLabel: true
+                                    }
                                 }
                             ],
                             yAxis : [
@@ -106,12 +100,11 @@
                             ],
                             series : [
                                 {
-                                    name:'出件数据',
-                                    type:'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data:{{ count|safe }}
-                                },
+                                    name:'当月出件量',
+                                    type:'bar',
+                                    barWidth: '60%',
+                                    data:{{ owner_count|safe }},
+                                }
                             ]
                         };
 

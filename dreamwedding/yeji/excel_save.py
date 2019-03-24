@@ -5,7 +5,7 @@
 
 from openpyxl import load_workbook
 
-from .models import Yeji, Shejishi, Department
+from .models import Yeji, Shejishi
 
 def Save_yejimodel(excel_file):
     '''
@@ -43,11 +43,18 @@ def Save_yejimodel(excel_file):
         zhangshu = cell['zhangshu']
         department = str(cell['department'])
         sjsid = Shejishi.objects.get_or_create(name=owner)[0].id
-        departmentid = Department.objects.get_or_create(name=department)[0].id
+
+        if department == Yeji.DEPARTMENT_ITEM[0][1]:
+            departmentid = Yeji.DEPARTMENT_HS
+        elif department == Yeji.DEPARTMENT_ITEM[1][1]:
+            departmentid = Yeji.DEPARTMENT_BB
+        elif department == Yeji.DEPARTMENT_ITEM[2][1]:
+            departmentid = Yeji.DEPARTMENT_QJF
+
         sql = Yeji(order=order, name=name, jiaogao=jiaogao,
                    taoxi=taoxi, jiaxuan=jiaxuan, owner_id=sjsid, jiaogao_own_id=sjsid,
                    chujian_date=chujian_date, note=note, zhangshu=zhangshu,
-                   department_id=departmentid)
+                   department=departmentid)
         sqllist.append(sql)
     Yeji.objects.bulk_create(sqllist)
 
