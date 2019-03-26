@@ -22,3 +22,5 @@ urlpatterns = [
     path('', include('kepan.urls')),
     path('yeji/', include('yeji.urls')),
 ]
+admin.site.site_header = 'Django 后台业绩统计'
+admin.site.site_title = 'Django 后台业绩统计'
