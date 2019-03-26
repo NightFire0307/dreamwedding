@@ -10,7 +10,7 @@ from django.shortcuts import render
 from .models import Kepan
 
 def download_excel(request):
-    file_path = open(settings.BASE_DIR + '\\' + 'templates/admin/excel_templates/刻盘导入模板.xlsx', 'rb')
+    file_path = open(os.path.join(settings.BASE_DIR, 'templates/admin/excel_templates/刻盘导入模板.xlsx'), 'rb')
     response = FileResponse(file_path, as_attachment=True)
     return response
 
@@ -30,4 +30,4 @@ def IndexView(request):
         'date': json.dumps(date_list),
         'count': json.dumps(count_list),
     }
-    return render(request, 'kepan/index.html', context=context)
+    return render(request, 'theme/kepan/kepan_list.html', context=context)

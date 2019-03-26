@@ -10,7 +10,8 @@ from django.shortcuts import render
 from .models import Yeji, Shejishi
 
 def download_yejiexcel(request):
-    file_path = open(settings.BASE_DIR + '\\' + 'templates/admin/excel_templates/业绩导入模板.xlsx', 'rb')
+    print(settings.BASE_DIR)
+    file_path = open(os.path.join(settings.BASE_DIR, 'templates/admin/excel_templates/业绩导入模板.xlsx'), 'rb')
     response = FileResponse(file_path, as_attachment=True)
     return response
 
@@ -39,5 +40,5 @@ def yejiview(request):
         'owner_count': json.dumps(owner_out_count),
     }
 
-    return render(request, 'kepan/yeji_list.html', context=context)
+    return render(request, 'theme/yeji/yeji_list.html', context=context)
 
