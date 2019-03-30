@@ -8,6 +8,7 @@ from django.urls import path
 from django.shortcuts import render
 from daterange_filter.filter import DateRangeFilter
 from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill
 from io import BytesIO
 
 from .models import Shejishi, Yeji
@@ -93,7 +94,9 @@ class YejiAdmin(admin.ModelAdmin):
                   '出件时间', '备注', '张数', '订单所属部门']
 
         for column in range(1, len(header) + 1):
-            ws.cell(row=1, column=column, value=header[column - 1])
+            cell_style = ws.cell(row=1, column=column, value=header[column - 1])
+            cell_style.font = Font(name='宋体', size=12, bold=True, color="FFFFFF")
+            cell_style.fill = PatternFill("solid", fgColor='8E8E8E')
 
         print(queryset)
         data_row = queryset.count() + 2
