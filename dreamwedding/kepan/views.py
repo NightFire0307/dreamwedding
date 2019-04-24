@@ -5,6 +5,7 @@ from datetime import datetime
 from datetime import timedelta
 from django.conf import settings
 from django.http import FileResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from .models import Kepan
@@ -15,6 +16,10 @@ def download_excel(request):
     return response
 
 def IndexView(request):
+    username = request.COOKIES.get('username', '')
+    if not username:
+        return HttpResponseRedirect('/login/')
+
     date_list = []
     count_list = []
     for day in range(1, 8):
@@ -29,5 +34,6 @@ def IndexView(request):
     context = {
         'date': json.dumps(date_list),
         'count': json.dumps(count_list),
+        'username': request.COOKIES.get('username'),
     }
     return render(request, 'theme/kepan/kepan_list.html', context=context)

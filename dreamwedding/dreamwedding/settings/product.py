@@ -3,10 +3,11 @@
 # Power By:Abnegate
 # 2019/3/26 21:54
 
+import pymysql
 from .base import *
 
 DEBUG = False
-
+pymysql.install_as_MySQLdb()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

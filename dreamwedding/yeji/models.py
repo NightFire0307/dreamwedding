@@ -22,11 +22,14 @@ class Shejishi(models.Model):
         (STATUS_QUIT, '离职'),
     )
 
-    name = models.CharField(max_length=30, verbose_name='设计师名字', null=True, blank=True)
+    name = models.CharField(max_length=30, verbose_name='设计师名字', default='')
     status = models.PositiveIntegerField(choices=STATUS_ITEM, default=STATUS_NORMAL, verbose_name='是否在职')
 
     def __str__(self):
-        return self.name
+        if self.name:
+            return self.name
+        else:
+            return self.id
 
     class Meta:
         verbose_name = verbose_name_plural = '设计师'
@@ -80,7 +83,8 @@ class Yeji(models.Model):
     note = models.CharField(max_length=500,
                             verbose_name='备注',
                             null=True,
-                            blank=True)
+                            blank=True,
+                            default='')
     created_time = models.DateTimeField(auto_now=True,
                                         verbose_name='登记时间')
 
@@ -99,7 +103,10 @@ class Yeji(models.Model):
     colored_jiaogao.short_description = '校稿日期'
 
     def __str__(self):
-        return '订单号：{}'.format(self.order)
+        if self.order:
+            return '订单号：{}'.format(self.order)
+        else:
+            return '客户姓名：{}'.format(self.name)
 
     class Meta:
         ordering = ['-order']
